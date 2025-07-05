@@ -64,3 +64,7 @@ docker-compose.local.yaml
 
 # Audit feature data
 cognisync/audit/data/*
+
+
+scratch/
+data/
