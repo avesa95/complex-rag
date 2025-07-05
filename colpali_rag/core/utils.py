@@ -22,12 +22,20 @@ def read_json_file(json_path: Path) -> str:
         return json.dumps(json.dumps(json.load(f)))
 
 
-if __name__ == "__main__":
-    import json
+def read_text_file(text_path: Path) -> str:
+    """
+    Read a text file from disk and return the contents as a string.
+    Raises FileNotFoundError if the file does not exist.
+    """
+    with open(text_path, "r") as f:
+        return f.read()
 
+
+if __name__ == "__main__":
     z = read_json_file(
         Path(
-            "/Users/vesaalexandru/Workspaces/cube/america/complex-rag/scratch/service_manual_long/page_35/metadata_page_35.json"
+            "/Users/vesaalexandru/Workspaces/cube/america/complex-rag/scratch/"
+            "service_manual_long/page_35/metadata_page_35.json"
         )
     )
     print(z)

@@ -10,7 +10,7 @@ from colpali_engine.models import ColPali, ColPaliProcessor
 
 def get_device() -> torch.device:
     """Get the best available device (CUDA if available, else CPU)."""
-    return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    return torch.device("cuda" if torch.cuda.is_available() else "mps")
 
 
 def load_colpali_model(

@@ -82,16 +82,27 @@ def export_figures_tables_and_text(
             logger.info(f"Saved table PNG: {png_file}")
 
         # Export figures
+        # Export figures
         logger.info(f"Starting figure extraction for page {page_num}...")
         page_figure_idx = 0
         for item, _ in doc.iterate_items():
             if isinstance(item, PictureItem):
+                img = item.get_image(doc)
+                width, height = img.size
+                area = width * height
+
+                # Filter out icons/small images
+                if area < 400:
+                    logger.info(
+                        f"Skipping image on page {page_num} due to small size or icon-like shape."
+                    )
+                    continue
+
                 page_figure_idx += 1
                 image_id = f"image-{page_num}-{page_figure_idx}"
                 metadata["figures"].append(image_id)
 
                 logger.info(f"Exporting {image_id}")
-                img = item.get_image(doc)
                 img_file = images_folder / f"{image_id}.png"
                 img.save(img_file, "PNG")
                 logger.info(f"Saved image: {img_file}")

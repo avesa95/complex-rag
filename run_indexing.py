@@ -108,7 +108,7 @@ def index_pdf(
 if __name__ == "__main__":
     # Simple usage - just change the PDF path here
 
-    PDF_PATH = "/Users/vesaalexandru/Workspaces/cube/complex-rag/31211033 - JLG 642, 742, 943, 1043, 1055, 1255-1_removed_removed_removed.pdf"
+    PDF_PATH = "/Users/vesaalexandru/Workspaces/cube/america/complex-rag/data/service_manual_long.pdf"
 
     # Validate PDF path
     pdf_path = Path(PDF_PATH)
@@ -125,4 +125,6 @@ if __name__ == "__main__":
     print("-" * 50)
 
     # Run indexing
-    index_pdf(pdf_path=str(pdf_path), collection_name="automotive_docs", batch_size=16)
+    index_pdf(
+        pdf_path=str(pdf_path), collection_name="colpali_docs_index", batch_size=16
+    )

@@ -79,10 +79,10 @@ Be precise and factual. Quote the manual text when possible."""
 if __name__ == "__main__":
     # Initialize everything
     litellm_client = LitellmClient(model_name="openai/gpt-4o")
-    qdrant_manager = QdrantManager(collection_name="automotive_docs")
+    qdrant_manager = QdrantManager(collection_name="colpali_docs_index")
 
     # Your question
-    question = "How often should I check the oil level?"
+    question = "My front axle brakes will not release in my JLG 1055. How do I get them to release?"
 
     print("🔍 Enhanced RAG Pipeline")
     print(f"❓ Question: {question}")
@@ -92,12 +92,12 @@ if __name__ == "__main__":
     print("📖 Step 1: Retrieving relevant pages...")
     results = qdrant_manager.search_similar_documents_text(
         query_text=question,
-        limit=5,
+        limit=20,
         vector_name="initial",  # or "cascade" if you're using enhanced_search
     )
 
     print(f"✅ Found {len(results)} relevant pages")
-    for i, result in enumerate(results[:3], 1):
+    for i, result in enumerate(results, 1):
         print(
             f"  {i}. Page {result['payload']['page_number']} (Score: {result['score']:.4f})"
         )
@@ -105,15 +105,16 @@ if __name__ == "__main__":
     # Step 2: Read the top pages with VLM
     print("\n🤖 Step 2: Reading pages with GPT-4V...")
 
-    images_folder = "/Users/vesaalexandru/Workspaces/cube/complex-rag/images"
+    images_folder = "scratch/service_manual_long"
 
     # Try the top 3 pages
-    for i, result in enumerate(results[:3], 1):
+    for i, result in enumerate(results, 1):
         page_number = result["payload"]["page_number"]
         score = result["score"]
 
         # Try to find the image file
-        image_path = f"{images_folder}/{page_number}.png"
+        page_dir = f"{images_folder}/page_{page_number}"
+        image_path = f"{page_dir}/page_{page_number}_full.png"
 
         if Path(image_path).exists():
             print(f"\n📄 Reading Page {page_number} (Score: {score:.4f})")
