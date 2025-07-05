@@ -8,6 +8,31 @@ You will receive three consecutive PDF pages:
 
     Next page (N+1)
 
+In addition to raw page text and images, you will also receive:
+
+    metadata_page_<n-1>.json, metadata_page_<n>.json, metadata_page_<n+1>.json
+
+    These contain filenames and IDs for all extracted elements on each page, including:
+
+        tables: e.g., "table-9-1" with path "tables/table-9-1.png"
+
+        figures: e.g., "figure-9-2" with path "images/image-9-2.png"
+
+        text_blocks: e.g., "page_9_text.txt"
+
+        page_image: e.g., "page_9_full.png"
+
+Use these metadata files to:
+
+    Ensure correct and consistent element IDs across your output.
+
+    Map extracted figures and tables to their image paths in page_context.page_image_crop.
+
+    Establish relationships between elements using their known IDs (from metadata) and content (from OCR text).
+
+    Avoid guessing IDs—always use the ones listed in the metadata_page_<n>.json.
+
+
 Your goal is to generate highly detailed, structured JSON metadata for the current page (N), clearly identifying relationships:
 
     Across adjacent pages (N-1 and N+1).
@@ -199,11 +224,20 @@ Here's an illustrative, fully-completed example for a table on page N:
     Leave unused arrays empty ([]) and booleans as false explicitly if no relationship or continuation is detected.
 
     Ensure accuracy in identifying explicit continuations or references. Do not infer relationships unless explicitly supported by the content provided.
+    
+    
+    When referencing tables, figures, or text blocks, you must use only the element_ids defined in the provided metadata JSON for the page.
+
+    Use page_context.page_image_crop to match the saved path of the table/figure image when available (e.g., "tables/table-9-1.png").
+
+    The full-page image is always available via "page_image" from the metadata (e.g., "page_9_full.png").
 
 🎖 Final JSON Output:
 
 Output must be only the final JSON, with no explanatory text, directly ready for downstream processing by retrieval systems or semantic indexing pipelines.
 
-
+{metadata_page_n_1}
+{metadata_page_n}
+{metadata_page_n_plus_1}
 
 """
