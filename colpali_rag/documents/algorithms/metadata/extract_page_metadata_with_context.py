@@ -44,29 +44,34 @@ def extract_metadata_from_page(
     page_n_text = str(read_text_file(Path(page_n_text_path)))
     page_n_plus_1_text = str(read_text_file(Path(page_n_plus_1_text_path)))
 
+    # Build content array with only non-empty images
+    content = [
+        {
+            "type": "text",
+            "text": METADATA_PROMPT.replace("{metadata_page_n_1}", metadata_page_n_1)
+            .replace("{metadata_page_n}", metadata_page_n)
+            .replace("{metadata_page_n_plus_1}", metadata_page_n_plus_1)
+            .replace("{page_n_1_text}", page_n_1_text)
+            .replace("{page_n_text}", page_n_text)
+            .replace("{page_n_plus_1_text}", page_n_plus_1_text),
+        }
+    ]
+
+    # Add images only if they exist
+    if image_data_uri:
+        content.append({"type": "image_url", "image_url": {"url": image_data_uri}})
+    if image_data_uri_n_1:
+        content.append({"type": "image_url", "image_url": {"url": image_data_uri_n_1}})
+    if image_data_uri_n_plus_1:
+        content.append(
+            {"type": "image_url", "image_url": {"url": image_data_uri_n_plus_1}}
+        )
+
     resp = litellm_client.chat(
         messages=[
             {
                 "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": METADATA_PROMPT.replace(
-                            "{metadata_page_n_1}", metadata_page_n_1
-                        )
-                        .replace("{metadata_page_n}", metadata_page_n)
-                        .replace("{metadata_page_n_plus_1}", metadata_page_n_plus_1)
-                        .replace("{page_n_1_text}", page_n_1_text)
-                        .replace("{page_n_text}", page_n_text)
-                        .replace("{page_n_plus_1_text}", page_n_plus_1_text),
-                    },
-                    {"type": "image_url", "image_url": {"url": image_data_uri}},
-                    {"type": "image_url", "image_url": {"url": image_data_uri_n_1}},
-                    {
-                        "type": "image_url",
-                        "image_url": {"url": image_data_uri_n_plus_1},
-                    },
-                ],
+                "content": content,
             },
         ],
         response_format=None,
@@ -108,17 +113,53 @@ def extract_metadata_from_page_with_response(
     Returns:
         Full LiteLLM response object containing both content and usage information
     """
-    image_data_uri = encode_image_to_data_uri(Path(image_path_n))
-    image_data_uri_n_1 = encode_image_to_data_uri(Path(image_path_n_1))
-    image_data_uri_n_plus_1 = encode_image_to_data_uri(Path(image_path_n_plus_1))
+    # Handle missing images gracefully
+    try:
+        image_data_uri = encode_image_to_data_uri(Path(image_path_n))
+    except FileNotFoundError:
+        image_data_uri = ""
 
-    metadata_page_n_1 = str(read_json_file(Path(metadata_page_n_1_path)))
-    metadata_page_n = str(read_json_file(Path(metadata_page_n_path)))
-    metadata_page_n_plus_1 = str(read_json_file(Path(metadata_page_n_plus_1_path)))
+    try:
+        image_data_uri_n_1 = encode_image_to_data_uri(Path(image_path_n_1))
+    except FileNotFoundError:
+        image_data_uri_n_1 = ""
 
-    page_n_1_text = str(read_text_file(Path(page_n_1_text_path)))
-    page_n_text = str(read_text_file(Path(page_n_text_path)))
-    page_n_plus_1_text = str(read_text_file(Path(page_n_plus_1_text_path)))
+    try:
+        image_data_uri_n_plus_1 = encode_image_to_data_uri(Path(image_path_n_plus_1))
+    except FileNotFoundError:
+        image_data_uri_n_plus_1 = ""
+
+    # Handle missing metadata files gracefully
+    try:
+        metadata_page_n_1 = str(read_json_file(Path(metadata_page_n_1_path)))
+    except FileNotFoundError:
+        metadata_page_n_1 = "{}"
+
+    try:
+        metadata_page_n = str(read_json_file(Path(metadata_page_n_path)))
+    except FileNotFoundError:
+        metadata_page_n = "{}"
+
+    try:
+        metadata_page_n_plus_1 = str(read_json_file(Path(metadata_page_n_plus_1_path)))
+    except FileNotFoundError:
+        metadata_page_n_plus_1 = "{}"
+
+    # Handle missing text files gracefully
+    try:
+        page_n_1_text = str(read_text_file(Path(page_n_1_text_path)))
+    except FileNotFoundError:
+        page_n_1_text = ""
+
+    try:
+        page_n_text = str(read_text_file(Path(page_n_text_path)))
+    except FileNotFoundError:
+        page_n_text = ""
+
+    try:
+        page_n_plus_1_text = str(read_text_file(Path(page_n_plus_1_text_path)))
+    except FileNotFoundError:
+        page_n_plus_1_text = ""
 
     resp = litellm_client.chat(
         messages=[

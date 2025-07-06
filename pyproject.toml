@@ -18,6 +18,7 @@ dependencies = [
     "pdf2image>=1.17.0",
     "litellm>=1.73.6",
     "pymupdf>=1.26.3",
+    "fastembed>=0.7.1",
 ]
 
 [project.optional-dependencies]
