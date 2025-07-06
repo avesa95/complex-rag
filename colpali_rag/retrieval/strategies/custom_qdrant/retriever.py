@@ -136,15 +136,14 @@ class QdrantRetrieverStrategy(RetrieverStrategy):
 
 
 if __name__ == "__main__":
-    from settings import get_settings
+    from settings import settings
 
-    config = get_settings()
     openai_client = OpenAI()
-    collection_name = "multi-vector-indexing"
+    collection_name = "service_manual_pages"
 
     retrieval_config = RetrievalConfig(
-        qdrant_host=config.QDRANT_HOST,
-        qdrant_api_key=config.QDRANT_API_KEY,
+        qdrant_host=settings.QDRANT_HOST,
+        qdrant_api_key=settings.QDRANT_API_KEY,
         timeout=60,
     )
 
@@ -154,7 +153,7 @@ if __name__ == "__main__":
     )
 
     # Example query
-    query = "What are some key metrics Hyperhuman uses to demonstrate its impact (e.g., number of videos created, users served)?"
+    query = "When should I consider replacing my boom chains?"
 
     # Try different search types
     try:
