@@ -9,8 +9,6 @@ from colpali_rag.retrieval.strategies.base import (
     RetrievalConfig,
 )
 
-print("ss")
-
 
 class HybridRetriever(BaseQdrantRetriever):
     def __init__(
@@ -61,4 +59,21 @@ class HybridRetriever(BaseQdrantRetriever):
             limit=limit,
             score_threshold=score_threshold,
         )
-        return self._format_results(results)
+        return results
+        # return self._format_results(results)
+
+
+if __name__ == "__main__":
+    from settings import settings
+
+    config = RetrievalConfig(
+        qdrant_host=settings.QDRANT_URL,
+        qdrant_api_key=settings.QDRANT_API_KEY,
+    )
+    retriever = HybridRetriever(config)
+
+    query = "My front axle brakes will not release in my JLG 1055. How do I get them to release ?"
+    results = retriever.retrieve(
+        query=query, collection_name="service_manual_pages", score_threshold=4
+    )
+    print(results)

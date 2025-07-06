@@ -142,7 +142,7 @@ if __name__ == "__main__":
     collection_name = "service_manual_pages"
 
     retrieval_config = RetrievalConfig(
-        qdrant_host=settings.QDRANT_HOST,
+        qdrant_host=settings.QDRANT_URL,
         qdrant_api_key=settings.QDRANT_API_KEY,
         timeout=60,
     )
@@ -165,6 +165,7 @@ if __name__ == "__main__":
             prefetch_limit=20,
             collection_name=collection_name,
         )
+        print(hybrid_results)
 
         matryoska_results = retriever.retrieve(
             query=query,
