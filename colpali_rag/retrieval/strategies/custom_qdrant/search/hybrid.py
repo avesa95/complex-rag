@@ -9,6 +9,8 @@ from colpali_rag.retrieval.strategies.base import (
     RetrievalConfig,
 )
 
+print("ss")
+
 
 class HybridRetriever(BaseQdrantRetriever):
     def __init__(
