@@ -66,3 +66,15 @@ class MatchedSection(BaseModel):
 class QuestionMappingResponse(BaseModel):
     question: str
     matched_sections: List[MatchedSection]
+
+
+class SubQuestionMapping(BaseModel):
+    sub_question: str
+    section_number: int
+    section_title: str
+    matched_chapters: List[str]
+
+
+class QueryDecompositionResponse(BaseModel):
+    original_question: str
+    decomposed_questions: List[SubQuestionMapping]

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
 
     QDRANT_URL: str = "http://localhost:6333"
     QDRANT_API_KEY: str = "1234567890"
+    ANTHROPIC_API_KEY: str = ""
     COLPALI_MODEL_NAME: str = "vidore/colpali-v1.2"
     BATCH_SIZE: int = 16
     IMAGE_SEQ_LENGTH: int = 1024
