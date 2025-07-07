@@ -1,0 +1,301 @@
+{
+    "score": 5.52208,
+    "id": 6369467185913075071,
+    "payload": {
+      "embedding_text": "Document: Boom Chain Maintenance Manual (Unknown, Revision 3)\n\nSection: 3.11 Boom Extend and Retract Chains\n\nSubsection: 3.11.2 Inspection Guidelines\n\nPage: 130\n\nText Block: Boom Chain Inspection Guidelines\nSummary: Detailed instructions for inspecting boom chains, focusing on edge wear, elongation, and distorted link plates. Emphasizes the importance of measuring chain sections that move over sheaves and highlights signs of wear and potential failure.\n\nFull Text Content:\nBoom\n\nEdge Wear\n\nCheck the chain for wear on the link plate edges caused by running back and forth over the sheave. The maximum reduction of material should not exceed 5%. Measure and compare to a normal link plate height by measuring a portion of chain that does not run over the sheave. If the measured plate height ( 1 ) is 5% less than the normal plate height ( 2 ), discard and replace the chain.\n\nElongation\n\nIt is important to measure the chain in the section that moves over the sheaves because it receives the most frequent articulation. Measuring the chain near its clevis terminals could give an inaccurate reading. The ends of the chains, near the clevis terminal, will not have flexed as frequently, if at all, as the middle of the chains.\n\nIt is best to measure in 12 pin increments from pin center to pin center. For example, if the links are 25 mm (1 in) from pin center to pin center, the distance should be 305 mm (12 in). If the links are 19 mm (0.75 in) apart, the distance after 12 pins should be 229 mm (9 in).\n\nIf the distance measured ( 3 ) is 3% greater than the normal length ( 4 ), discard and replace the chain.\n\nDistorted or Battered Link Plates\n\nDistorted or battered link plates ( 5 ) on a leaf chain can cause tight joints and prevent flexing.\n\nTurning or Protruding Pins\n\nHighly loaded chain, operating with inadequate lubrication can generate abnormal frictional forces between pin and link plates. When chain is allowed to operate in this condition, a pin or series of pins, can begin to twist out of a chain, resulting in failure.\n\nExamine the pin head rivets to determine if the 'VEE' flats are still in correct alignment ( 6 ). Chain with rotated/displaced heads ( 7 ) or abnormal pin protrusion ( 8 ) should be replaced immediately.\n\nDO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain. Once the press fit integrity between outside plates and pins has been altered, it cannot be restored.\n\nAny wear pattern on the pin heads or the sides of the link plates indicates misalignment in the system. This condition damages the chain as well as increases frictional loading and should be corrected.\n\nCracked Plates\n\nInspect the chains very carefully, front and back as well as side to side, for any evidence of cracked plates. If any one crack is discovered, the chain should be replaced in its entirety.\n\nIt is important, however to determine the cause of the crack before installing a new chain so the condition does not repeat itself.\n\nEntities: Boom Chain, Link Plates, Sheaves\n\nWarnings: DO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain.\n\nKeywords: boom chain, edge wear, elongation, inspection, link plates\n\nModel Applicability: 1043, 1055, 1255, 642, 742, 943\n\nContext: Inspection, Maintenance",
+      "page_number": "130",
+      "document_id": "31211033",
+      "document_title": "Boom Chain Maintenance Manual",
+      "document_type": "Service Manual",
+      "manufacturer": "Unknown",
+      "models_covered": [
+        "642",
+        "742",
+        "943",
+        "1043",
+        "1055",
+        "1255"
+      ],
+      "section_number": "3.11",
+      "section_title": "Boom Extend and Retract Chains",
+      "subsection_number": "3.11.2",
+      "subsection_title": "Inspection Guidelines",
+      "has_tables": false,
+      "has_figures": true,
+      "table_count": 0,
+      "figure_count": 6,
+      "text_block_count": 1,
+      "page_visual_description": "The page is primarily textual with a focus on detailed inspection guidelines for boom chains. It includes several diagrams illustrating different types of chain wear and failure modes. The top of the page features a header with the section title 'Boom'. The page is divided into sections with bold headings such as 'Edge Wear', 'Elongation', and 'Distorted or Battered Link Plates'. Diagrams are labeled with numbers and letters, showing specific parts of the chain and their conditions. There are no tables, but the page includes multiple figures that visually support the text. The layout is structured to guide the reader through inspection steps and potential issues with visual aids.",
+      "entities": [
+        "Boom Chain",
+        "Link Plates",
+        "Sheaves"
+      ],
+      "keywords": [
+        "edge wear",
+        "boom chain",
+        "inspection",
+        "link plates",
+        "elongation"
+      ],
+      "warnings": [
+        "DO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain."
+      ],
+      "application_contexts": [
+        "Maintenance",
+        "Inspection"
+      ],
+      "applicable_models": [
+        "742",
+        "1055",
+        "642",
+        "1255",
+        "943",
+        "1043"
+      ],
+      "component_types": [
+        "Boom System"
+      ],
+      "full_page_metadata": {
+        "document_metadata": {
+          "document_title": "Boom Chain Maintenance Manual",
+          "document_id": "31211033",
+          "document_revision": "3",
+          "document_revision_date": "Unknown",
+          "document_type": "Service Manual",
+          "manufacturer": "Unknown",
+          "models_covered": [
+            "642",
+            "742",
+            "943",
+            "1043",
+            "1055",
+            "1255"
+          ],
+          "machine_configuration": [
+            
+          ]
+        },
+        "page_number": "130",
+        "page_image": "page_130_full.png",
+        "page_visual_description": "The page is primarily textual with a focus on detailed inspection guidelines for boom chains. It includes several diagrams illustrating different types of chain wear and failure modes. The top of the page features a header with the section title 'Boom'. The page is divided into sections with bold headings such as 'Edge Wear', 'Elongation', and 'Distorted or Battered Link Plates'. Diagrams are labeled with numbers and letters, showing specific parts of the chain and their conditions. There are no tables, but the page includes multiple figures that visually support the text. The layout is structured to guide the reader through inspection steps and potential issues with visual aids.",
+        "section": {
+          "section_number": "3.11",
+          "section_title": "Boom Extend and Retract Chains",
+          "subsection_number": "3.11.2",
+          "subsection_title": "Inspection Guidelines"
+        },
+        "content_elements": [
+          {
+            "type": "text_block",
+            "element_id": "textblock-130-1",
+            "title": "Boom Chain Inspection Guidelines",
+            "summary": "Detailed instructions for inspecting boom chains, focusing on edge wear, elongation, and distorted link plates. Emphasizes the importance of measuring chain sections that move over sheaves and highlights signs of wear and potential failure.",
+            "keywords": [
+              "boom chain",
+              "inspection",
+              "edge wear",
+              "elongation",
+              "link plates"
+            ],
+            "entities": [
+              "Boom Chain",
+              "Link Plates",
+              "Sheaves"
+            ],
+            "warnings": [
+              "DO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain."
+            ],
+            "component_type": "Boom System",
+            "model_applicability": [
+              "642",
+              "742",
+              "943",
+              "1043",
+              "1055",
+              "1255"
+            ],
+            "application_context": [
+              "Maintenance",
+              "Inspection"
+            ],
+            "within_page_relations": {
+              "related_figures": [
+                {
+                  "label": "figure-130-1",
+                  "description": "Illustrates edge wear on link plates."
+                },
+                {
+                  "label": "figure-130-2",
+                  "description": "Shows elongation measurement method."
+                },
+                {
+                  "label": "figure-130-3",
+                  "description": "Depicts distorted or battered link plates."
+                },
+                {
+                  "label": "figure-130-4",
+                  "description": "Illustrates turning or protruding pins."
+                }
+              ],
+              "related_tables": [
+                
+              ],
+              "related_text_blocks": [
+                
+              ]
+            },
+            "cross_page_context": {
+              "continued_from_previous_page": true,
+              "continues_on_next_page": true,
+              "related_content_from_previous_page": [
+                "textblock-129-1"
+              ],
+              "related_content_from_next_page": [
+                "textblock-131-1"
+              ]
+            },
+            "page_context": {
+              "page_image_crop": "page_130_full.png"
+            }
+          }
+        ],
+        "has_tables": false,
+        "has_figures": true,
+        "has_text_blocks": true,
+        "table_count": 0,
+        "figure_count": 6,
+        "text_block_count": 1,
+        "content_summary": {
+          "tables": [
+            
+          ],
+          "figures": [
+            "image-130-1",
+            "image-130-2",
+            "image-130-3",
+            "image-130-4",
+            "image-130-5",
+            "image-130-6"
+          ],
+          "text_blocks": [
+            "page_130_text.txt"
+          ]
+        },
+        "text_content": "Boom\n\nEdge Wear\n\nCheck the chain for wear on the link plate edges caused by running back and forth over the sheave. The maximum reduction of material should not exceed 5%. Measure and compare to a normal link plate height by measuring a portion of chain that does not run over the sheave. If the measured plate height ( 1 ) is 5% less than the normal plate height ( 2 ), discard and replace the chain.\n\nElongation\n\nIt is important to measure the chain in the section that moves over the sheaves because it receives the most frequent articulation. Measuring the chain near its clevis terminals could give an inaccurate reading. The ends of the chains, near the clevis terminal, will not have flexed as frequently, if at all, as the middle of the chains.\n\nIt is best to measure in 12 pin increments from pin center to pin center. For example, if the links are 25 mm (1 in) from pin center to pin center, the distance should be 305 mm (12 in). If the links are 19 mm (0.75 in) apart, the distance after 12 pins should be 229 mm (9 in).\n\nIf the distance measured ( 3 ) is 3% greater than the normal length ( 4 ), discard and replace the chain.\n\nDistorted or Battered Link Plates\n\nDistorted or battered link plates ( 5 ) on a leaf chain can cause tight joints and prevent flexing.\n\nTurning or Protruding Pins\n\nHighly loaded chain, operating with inadequate lubrication can generate abnormal frictional forces between pin and link plates. When chain is allowed to operate in this condition, a pin or series of pins, can begin to twist out of a chain, resulting in failure.\n\nExamine the pin head rivets to determine if the 'VEE' flats are still in correct alignment ( 6 ). Chain with rotated/displaced heads ( 7 ) or abnormal pin protrusion ( 8 ) should be replaced immediately.\n\nDO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain. Once the press fit integrity between outside plates and pins has been altered, it cannot be restored.\n\nAny wear pattern on the pin heads or the sides of the link plates indicates misalignment in the system. This condition damages the chain as well as increases frictional loading and should be corrected.\n\nCracked Plates\n\nInspect the chains very carefully, front and back as well as side to side, for any evidence of cracked plates. If any one crack is discovered, the chain should be replaced in its entirety.\n\nIt is important, however to determine the cause of the crack before installing a new chain so the condition does not repeat itself.",
+        "text_file": "page_130_text.txt"
+      }
+    },
+    "text": "Document: Boom Chain Maintenance Manual (Unknown, Revision 3)\n\nSection: 3.11 Boom Extend and Retract Chains\n\nSubsection: 3.11.2 Inspection Guidelines\n\nPage: 130\n\nText Block: Boom Chain Inspection Guidelines\nSummary: Detailed instructions for inspecting boom chains, focusing on edge wear, elongation, and distorted link plates. Emphasizes the importance of measuring chain sections that move over sheaves and highlights signs of wear and potential failure.\n\nFull Text Content:\nBoom\n\nEdge Wear\n\nCheck the chain for wear on the link plate edges caused by running back and forth over the sheave. The maximum reduction of material should not exceed 5%. Measure and compare to a normal link plate height by measuring a portion of chain that does not run over the sheave. If the measured plate height ( 1 ) is 5% less than the normal plate height ( 2 ), discard and replace the chain.\n\nElongation\n\nIt is important to measure the chain in the section that moves over the sheaves because it receives the most frequent articulation. Measuring the chain near its clevis terminals could give an inaccurate reading. The ends of the chains, near the clevis terminal, will not have flexed as frequently, if at all, as the middle of the chains.\n\nIt is best to measure in 12 pin increments from pin center to pin center. For example, if the links are 25 mm (1 in) from pin center to pin center, the distance should be 305 mm (12 in). If the links are 19 mm (0.75 in) apart, the distance after 12 pins should be 229 mm (9 in).\n\nIf the distance measured ( 3 ) is 3% greater than the normal length ( 4 ), discard and replace the chain.\n\nDistorted or Battered Link Plates\n\nDistorted or battered link plates ( 5 ) on a leaf chain can cause tight joints and prevent flexing.\n\nTurning or Protruding Pins\n\nHighly loaded chain, operating with inadequate lubrication can generate abnormal frictional forces between pin and link plates. When chain is allowed to operate in this condition, a pin or series of pins, can begin to twist out of a chain, resulting in failure.\n\nExamine the pin head rivets to determine if the 'VEE' flats are still in correct alignment ( 6 ). Chain with rotated/displaced heads ( 7 ) or abnormal pin protrusion ( 8 ) should be replaced immediately.\n\nDO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain. Once the press fit integrity between outside plates and pins has been altered, it cannot be restored.\n\nAny wear pattern on the pin heads or the sides of the link plates indicates misalignment in the system. This condition damages the chain as well as increases frictional loading and should be corrected.\n\nCracked Plates\n\nInspect the chains very carefully, front and back as well as side to side, for any evidence of cracked plates. If any one crack is discovered, the chain should be replaced in its entirety.\n\nIt is important, however to determine the cause of the crack before installing a new chain so the condition does not repeat itself.\n\nEntities: Boom Chain, Link Plates, Sheaves\n\nWarnings: DO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain.\n\nKeywords: boom chain, edge wear, elongation, inspection, link plates\n\nModel Applicability: 1043, 1055, 1255, 642, 742, 943\n\nContext: Inspection, Maintenance",
+    "page_number": "130",
+    "document_title": "Boom Chain Maintenance Manual",
+    "document_id": "31211033",
+    "section_title": "Boom Extend and Retract Chains",
+    "subsection_title": "Inspection Guidelines",
+    "manufacturer": "Unknown",
+    "models_covered": [
+      "642",
+      "742",
+      "943",
+      "1043",
+      "1055",
+      "1255"
+    ],
+    "entities": [
+      "Boom Chain",
+      "Link Plates",
+      "Sheaves"
+    ],
+    "keywords": [
+      "edge wear",
+      "boom chain",
+      "inspection",
+      "link plates",
+      "elongation"
+    ],
+    "warnings": [
+      "DO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain."
+    ],
+    "has_tables": false,
+    "has_figures": true,
+    "table_count": 0,
+    "figure_count": 6,
+    "page_visual_description": "The page is primarily textual with a focus on detailed inspection guidelines for boom chains. It includes several diagrams illustrating different types of chain wear and failure modes. The top of the page features a header with the section title 'Boom'. The page is divided into sections with bold headings such as 'Edge Wear', 'Elongation', and 'Distorted or Battered Link Plates'. Diagrams are labeled with numbers and letters, showing specific parts of the chain and their conditions. There are no tables, but the page includes multiple figures that visually support the text. The layout is structured to guide the reader through inspection steps and potential issues with visual aids.",
+    "content_elements": [
+      {
+        "type": "text_block",
+        "element_id": "textblock-130-1",
+        "title": "Boom Chain Inspection Guidelines",
+        "summary": "Detailed instructions for inspecting boom chains, focusing on edge wear, elongation, and distorted link plates. Emphasizes the importance of measuring chain sections that move over sheaves and highlights signs of wear and potential failure.",
+        "keywords": [
+          "boom chain",
+          "inspection",
+          "edge wear",
+          "elongation",
+          "link plates"
+        ],
+        "entities": [
+          "Boom Chain",
+          "Link Plates",
+          "Sheaves"
+        ],
+        "warnings": [
+          "DO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain."
+        ],
+        "component_type": "Boom System",
+        "model_applicability": [
+          "642",
+          "742",
+          "943",
+          "1043",
+          "1055",
+          "1255"
+        ],
+        "application_context": [
+          "Maintenance",
+          "Inspection"
+        ],
+        "within_page_relations": {
+          "related_figures": [
+            {
+              "label": "figure-130-1",
+              "description": "Illustrates edge wear on link plates."
+            },
+            {
+              "label": "figure-130-2",
+              "description": "Shows elongation measurement method."
+            },
+            {
+              "label": "figure-130-3",
+              "description": "Depicts distorted or battered link plates."
+            },
+            {
+              "label": "figure-130-4",
+              "description": "Illustrates turning or protruding pins."
+            }
+          ],
+          "related_tables": [
+            
+          ],
+          "related_text_blocks": [
+            
+          ]
+        },
+        "cross_page_context": {
+          "continued_from_previous_page": true,
+          "continues_on_next_page": true,
+          "related_content_from_previous_page": [
+            "textblock-129-1"
+          ],
+          "related_content_from_next_page": [
+            "textblock-131-1"
+          ]
+        },
+        "page_context": {
+          "page_image_crop": "page_130_full.png"
+        }
+      }
+    ],
+    "text_content": "Boom\n\nEdge Wear\n\nCheck the chain for wear on the link plate edges caused by running back and forth over the sheave. The maximum reduction of material should not exceed 5%. Measure and compare to a normal link plate height by measuring a portion of chain that does not run over the sheave. If the measured plate height ( 1 ) is 5% less than the normal plate height ( 2 ), discard and replace the chain.\n\nElongation\n\nIt is important to measure the chain in the section that moves over the sheaves because it receives the most frequent articulation. Measuring the chain near its clevis terminals could give an inaccurate reading. The ends of the chains, near the clevis terminal, will not have flexed as frequently, if at all, as the middle of the chains.\n\nIt is best to measure in 12 pin increments from pin center to pin center. For example, if the links are 25 mm (1 in) from pin center to pin center, the distance should be 305 mm (12 in). If the links are 19 mm (0.75 in) apart, the distance after 12 pins should be 229 mm (9 in).\n\nIf the distance measured ( 3 ) is 3% greater than the normal length ( 4 ), discard and replace the chain.\n\nDistorted or Battered Link Plates\n\nDistorted or battered link plates ( 5 ) on a leaf chain can cause tight joints and prevent flexing.\n\nTurning or Protruding Pins\n\nHighly loaded chain, operating with inadequate lubrication can generate abnormal frictional forces between pin and link plates. When chain is allowed to operate in this condition, a pin or series of pins, can begin to twist out of a chain, resulting in failure.\n\nExamine the pin head rivets to determine if the 'VEE' flats are still in correct alignment ( 6 ). Chain with rotated/displaced heads ( 7 ) or abnormal pin protrusion ( 8 ) should be replaced immediately.\n\nDO NOT attempt to repair the chain by welding or driving the pin(s) back into the chain. Once the press fit integrity between outside plates and pins has been altered, it cannot be restored.\n\nAny wear pattern on the pin heads or the sides of the link plates indicates misalignment in the system. This condition damages the chain as well as increases frictional loading and should be corrected.\n\nCracked Plates\n\nInspect the chains very carefully, front and back as well as side to side, for any evidence of cracked plates. If any one crack is discovered, the chain should be replaced in its entirety.\n\nIt is important, however to determine the cause of the crack before installing a new chain so the condition does not repeat itself.",
+    "text_file": "page_130_text.txt"
+  }

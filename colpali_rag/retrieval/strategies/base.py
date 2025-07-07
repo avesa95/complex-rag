@@ -46,12 +46,49 @@ class BaseQdrantRetriever(ABC):
         pass
 
     def _format_results(self, results) -> List[Dict[str, Any]]:
-        """Format Qdrant results into standard format."""
-        return [
-            {
+        """Format Qdrant results into standard format with enhanced metadata extraction."""
+        formatted_results = []
+
+        for point in results.points:
+            payload = point.payload
+
+            # Extract key metadata for easier access
+            formatted_result = {
                 "score": point.score,
-                "payload": point.payload,
                 "id": point.id,
+                "payload": payload,
+                # Extract commonly used fields for convenience
+                "text": payload.get("embedding_text", ""),
+                "page_number": payload.get("page_number"),
+                "document_title": payload.get("document_title"),
+                "document_id": payload.get("document_id"),
+                "section_title": payload.get("section_title"),
+                "subsection_title": payload.get("subsection_title"),
+                "manufacturer": payload.get("manufacturer"),
+                "models_covered": payload.get("models_covered", []),
+                "entities": payload.get("entities", []),
+                "keywords": payload.get("keywords", []),
+                "warnings": payload.get("warnings", []),
+                "has_tables": payload.get("has_tables", False),
+                "has_figures": payload.get("has_figures", False),
+                "table_count": payload.get("table_count", 0),
+                "figure_count": payload.get("figure_count", 0),
             }
-            for point in results.points
-        ]
+
+            # Extract full page metadata if available
+            if "full_page_metadata" in payload:
+                full_metadata = payload["full_page_metadata"]
+                formatted_result.update(
+                    {
+                        "page_visual_description": full_metadata.get(
+                            "page_visual_description"
+                        ),
+                        "content_elements": full_metadata.get("content_elements", []),
+                        "text_content": full_metadata.get("text_content"),
+                        "text_file": full_metadata.get("text_file"),
+                    }
+                )
+
+            formatted_results.append(formatted_result)
+
+        return formatted_results

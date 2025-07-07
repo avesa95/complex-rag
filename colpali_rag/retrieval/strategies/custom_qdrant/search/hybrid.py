@@ -59,8 +59,8 @@ class HybridRetriever(BaseQdrantRetriever):
             limit=limit,
             score_threshold=score_threshold,
         )
-        return results
-        # return self._format_results(results)
+        # return results
+        return self._format_results(results)
 
 
 if __name__ == "__main__":
@@ -76,4 +76,3 @@ if __name__ == "__main__":
     results = retriever.retrieve(
         query=query, collection_name="service_manual_pages", score_threshold=4
     )
-    print(results)

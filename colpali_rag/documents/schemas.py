@@ -55,3 +55,14 @@ class TableMetadataResponse(BaseModel):
         default=None,
         description="List of figure labels or references (e.g., 'Fig. 1') mentioned near the table that help interpret it visually.",
     )
+
+
+class MatchedSection(BaseModel):
+    section_number: int
+    section_title: str
+    matched_chapters: List[str]
+
+
+class QuestionMappingResponse(BaseModel):
+    question: str
+    matched_sections: List[MatchedSection]

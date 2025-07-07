@@ -5,7 +5,7 @@ from colpali_rag.core.utils import (
     read_json_file,
     read_text_file,
 )
-from colpali_rag.documents.algorithms.metadata.prompts import METADATA_PROMPT
+from colpali_rag.documents.prompts.context_metadata import METADATA_PROMPT
 from colpali_rag.llm.litellm_client import LitellmClient
 
 

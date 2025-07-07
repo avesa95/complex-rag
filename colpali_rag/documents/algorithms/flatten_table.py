@@ -1,4 +1,4 @@
-from colpali_rag.documents.algorithms.metadata.prompts import FLATTEN_TABLE_PROMPT
+from colpali_rag.documents.prompts.flatten_table import FLATTEN_TABLE_PROMPT
 from colpali_rag.llm.litellm_client import LitellmClient
 
 

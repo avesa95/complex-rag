@@ -101,6 +101,7 @@ class QdrantRetrieverStrategy(RetrieverStrategy):
         limit: int = 10,
         prefetch_limit: int = 20,
         collection_name: str = None,
+        score_threshold: Optional[int] = 10,
     ) -> List[Dict[str, Any]]:
         """
         Retrieve relevant documents using the specified search strategy.
@@ -125,6 +126,7 @@ class QdrantRetrieverStrategy(RetrieverStrategy):
             limit=limit,
             prefetch_limit=prefetch_limit,
             collection_name=collection_name,
+            score_threshold=score_threshold,
         )
 
     def close(self):
@@ -136,6 +138,8 @@ class QdrantRetrieverStrategy(RetrieverStrategy):
 
 
 if __name__ == "__main__":
+    import json
+
     from settings import settings
 
     openai_client = OpenAI()
@@ -164,62 +168,65 @@ if __name__ == "__main__":
             limit=10,
             prefetch_limit=20,
             collection_name=collection_name,
+            score_threshold=4,
         )
         print(hybrid_results)
 
-        matryoska_results = retriever.retrieve(
-            query=query,
-            search_type=SearchType.MATRIOSKA,
-            limit=10,
-            prefetch_limit=20,
-            collection_name=collection_name,
-        )
+        with open("hybrid_results.json", "w") as f:
+            json.dump(hybrid_results, f)
+        # matryoska_results = retriever.retrieve(
+        #     query=query,
+        #     search_type=SearchType.MATRIOSKA,
+        #     limit=10,
+        #     prefetch_limit=20,
+        #     collection_name=collection_name,
+        # )
 
-        colbert_results = retriever.retrieve(
-            query=query,
-            search_type=SearchType.COLBERT,
-            limit=10,
-            collection_name=collection_name,
-        )
+        # colbert_results = retriever.retrieve(
+        #     query=query,
+        #     search_type=SearchType.COLBERT,
+        #     limit=10,
+        #     collection_name=collection_name,
+        # )
 
-        fusion_results = retriever.retrieve(
-            query=query,
-            search_type=SearchType.FUSION,
-            limit=10,
-            collection_name=collection_name,
-        )
+        # fusion_results = retriever.retrieve(
+        #     query=query,
+        #     search_type=SearchType.FUSION,
+        #     limit=10,
+        #     collection_name=collection_name,
+        # )
 
-        print("Hybrid results:", len(hybrid_results))
-        print("Matryoska results", len(matryoska_results))
-        print("Colbert results", len(colbert_results))
-        print("Fusion results", len(fusion_results))
+        # print("Hybrid results:", len(hybrid_results))
+        # print("Matryoska results", len(matryoska_results))
+        # print("Colbert results", len(colbert_results))
+        # print("Fusion results", len(fusion_results))
 
-        # sources = list(set([node["payload"]["name"] for node in hybrid_results]))
-        hybrid_scores = [
-            (node["payload"]["document_type"], node["score"]) for node in hybrid_results
-        ]
+        # # sources = list(set([node["payload"]["name"] for node in hybrid_results]))
+        # hybrid_scores = [
+        #     (node["payload"]["document_type"], node["score"]) for node in hybrid_results
+        # ]
 
-        matrioska_scores = [
-            (node["payload"]["document_type"], node["score"])
-            for node in matryoska_results
-        ]
+        # matrioska_scores = [
+        #     (node["payload"]["document_type"], node["score"])
+        #     for node in matryoska_results
+        # ]
 
-        colbert_scores = [
-            (node["payload"]["document_type"], node["score"])
-            for node in colbert_results
-        ]
+        # colbert_scores = [
+        #     (node["payload"]["document_type"], node["score"])
+        #     for node in colbert_results
+        # ]
 
-        fusion_scores = [
-            (node["payload"]["document_type"], node["score"]) for node in fusion_results
-        ]
+        # fusion_scores = [
+        #     (node["payload"]["document_type"], node["score"]) for node in fusion_results
+        # ]
 
-        print(hybrid_scores)
-        print("------------")
-        print(matrioska_scores)
-        print("------------")
-        print(colbert_scores)
-        print("------------")
-        print(fusion_scores)
+        # print(hybrid_scores)
+        # print("------------")
+        # print(matrioska_scores)
+        # print("------------")
+        # print(colbert_scores)
+        # print("------------")
+        # print(fusion_scores)
 
     finally:
         # Clean up resources

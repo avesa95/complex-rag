@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from colpali_rag.core.utils import encode_image_to_data_uri
-from colpali_rag.documents.algorithms.metadata.prompts import (
+from colpali_rag.documents.prompts import (
     GENERATE_TABLE_METADATA_PROMPT,
 )
 from colpali_rag.documents.schemas import TableMetadataResponse
