@@ -19,6 +19,8 @@ dependencies = [
     "litellm>=1.73.6",
     "pymupdf>=1.26.3",
     "fastembed>=0.7.1",
+    "streamlit-pdf-viewer>=0.0.26",
+    "streamlit>=1.46.1",
 ]
 
 [project.optional-dependencies]

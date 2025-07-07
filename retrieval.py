@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 from colpali_rag.documents.algorithms.user_query_decomposition import (
     user_query_decomposition,
@@ -103,6 +104,97 @@ Now generate the best possible answer using only the content above.
 """
 
 
+def correlate_references_with_files(
+    references, scratch_path="scratch/service_manual_long"
+):
+    """
+    Correlate table and figure references with their actual files on disk.
+
+    Args:
+        references: Dictionary with 'tables' and 'figures' lists
+        scratch_path: Path to the scratch directory containing page folders
+
+    Returns:
+        Updated references with file paths added
+    """
+    scratch_dir = Path(scratch_path)
+
+    # Correlate tables
+    for table in references["tables"]:
+        page_number = table.get("page_number")
+        element_id = table.get("element_id")
+
+        if page_number and element_id:
+            # Construct file paths
+            page_dir = scratch_dir / f"page_{page_number}"
+            table_png_path = page_dir / "tables" / f"{element_id}.png"
+            table_html_path = page_dir / "tables" / f"{element_id}.html"
+
+            # Check if files exist and add paths
+            if table_png_path.exists():
+                table["png_file"] = str(table_png_path)
+            if table_html_path.exists():
+                table["html_file"] = str(table_html_path)
+
+    # Correlate figures
+    for figure in references["figures"]:
+        page_number = figure.get("page_number")
+        label = figure.get("label")
+
+        if page_number and label:
+            # Construct file paths
+            page_dir = scratch_dir / f"page_{page_number}"
+
+            # Try different naming conventions for figure files
+            possible_paths = [
+                page_dir / "images" / f"{label}.png",  # Original label
+                page_dir
+                / "images"
+                / f"image-{page_number}-{label.split('-')[-1]}.png",  # Convert figure-X-Y to image-X-Y
+            ]
+
+            # Check if any of the possible paths exist
+            for figure_png_path in possible_paths:
+                if figure_png_path.exists():
+                    figure["png_file"] = str(figure_png_path)
+                    break
+
+    return references
+
+
+def deduplicate_references(references):
+    """
+    Remove duplicate tables and figures based on their unique identifiers.
+
+    Args:
+        references: Dictionary with 'tables' and 'figures' lists
+
+    Returns:
+        Dictionary with deduplicated 'tables' and 'figures' lists
+    """
+    # Deduplicate tables based on element_id and page_number
+    seen_tables = set()
+    unique_tables = []
+
+    for table in references["tables"]:
+        table_key = f"{table.get('element_id')}_{table.get('page_number')}"
+        if table_key not in seen_tables:
+            seen_tables.add(table_key)
+            unique_tables.append(table)
+
+    # Deduplicate figures based on label and page_number
+    seen_figures = set()
+    unique_figures = []
+
+    for figure in references["figures"]:
+        figure_key = f"{figure.get('label')}_{figure.get('page_number')}"
+        if figure_key not in seen_figures:
+            seen_figures.add(figure_key)
+            unique_figures.append(figure)
+
+    return {"tables": unique_tables, "figures": unique_figures}
+
+
 def extract_tables_and_figures_references(relevant_points):
     """
     Extract all tables and figures as references from the relevant points structure.
@@ -123,75 +215,50 @@ def extract_tables_and_figures_references(relevant_points):
             content_elements = result.get("content_elements", [])
             for element in content_elements:
                 if element.get("type") == "table":
-                    table_ref = {
-                        "element_id": element.get("element_id"),
-                        "title": element.get("title"),
-                        "summary": element.get("summary"),
-                        "page_number": result.get("page_number"),
-                        "section_title": result.get("section_title"),
-                        "subsection_title": result.get("subsection_title"),
-                        "table_id": element.get("table_id"),
-                        "table_file": element.get("table_file"),
-                        "table_image": element.get("table_image"),
-                        "flattened_content": element.get("flattened_content"),
-                        "html_content": element.get("html_content"),
-                        "sub_question": sub_question,
-                    }
-                    all_tables.append(table_ref)
+                    # Only add table if it has a proper identifier
+                    element_id = element.get("element_id")
+                    if element_id and element_id != "None":
+                        table_ref = {
+                            "sub_question": sub_question,
+                            "element_id": element_id,
+                            "page_number": result.get("page_number"),
+                        }
+                        all_tables.append(table_ref)
 
                 elif element.get("type") == "figure":
                     # Only add figure if it has a proper identifier
                     figure_id = element.get("figure_id")
                     if figure_id and figure_id != "None":
                         figure_ref = {
-                            "element_id": element.get("element_id"),
-                            "title": element.get("title"),
-                            "summary": element.get("summary"),
-                            "page_number": result.get("page_number"),
-                            "section_title": result.get("section_title"),
-                            "subsection_title": result.get("subsection_title"),
-                            "figure_id": figure_id,
-                            "figure_file": element.get("figure_file"),
                             "sub_question": sub_question,
+                            "label": figure_id,
+                            "page_number": result.get("page_number"),
                         }
                         all_figures.append(figure_ref)
 
             # Extract flattened tables if available
             flattened_tables = result.get("flattened_tables", [])
             for table in flattened_tables:
-                table_ref = {
-                    "table_id": table.get("table_id"),
-                    "html_file": table.get("html_file"),
-                    "html_content": table.get("html_content"),
-                    "flattened_content": table.get("flattened_content"),
-                    "page_number": result.get("page_number"),
-                    "section_title": result.get("section_title"),
-                    "subsection_title": result.get("subsection_title"),
-                    "sub_question": sub_question,
-                }
-                all_tables.append(table_ref)
+                table_id = table.get("table_id")
+                if table_id and table_id != "None":
+                    table_ref = {
+                        "sub_question": sub_question,
+                        "element_id": table_id,
+                        "page_number": result.get("page_number"),
+                    }
+                    all_tables.append(table_ref)
 
             # Extract table metadata if available
             table_metadata = result.get("table_metadata", [])
             for table in table_metadata:
-                table_ref = {
-                    "table_id": table.get("table_id"),
-                    "title": table.get("title"),
-                    "summary": table.get("summary"),
-                    "keywords": table.get("keywords", []),
-                    "entities": table.get("entities", []),
-                    "component_type": table.get("component_type"),
-                    "model_name": table.get("model_name"),
-                    "application_context": table.get("application_context", []),
-                    "related_figures": table.get("related_figures", []),
-                    "table_file": table.get("table_file"),
-                    "table_image": table.get("table_image"),
-                    "page_number": result.get("page_number"),
-                    "section_title": result.get("section_title"),
-                    "subsection_title": result.get("subsection_title"),
-                    "sub_question": sub_question,
-                }
-                all_tables.append(table_ref)
+                table_id = table.get("table_id")
+                if table_id and table_id != "None":
+                    table_ref = {
+                        "sub_question": sub_question,
+                        "element_id": table_id,
+                        "page_number": result.get("page_number"),
+                    }
+                    all_tables.append(table_ref)
 
             # Extract figures from content_summary if available
             content_summary = result.get("content_summary", {})
@@ -200,11 +267,9 @@ def extract_tables_and_figures_references(relevant_points):
                 # Only add figure if it has a proper identifier
                 if figure and figure != "None":
                     figure_ref = {
-                        "figure_id": figure,
-                        "page_number": result.get("page_number"),
-                        "section_title": result.get("section_title"),
-                        "subsection_title": result.get("subsection_title"),
                         "sub_question": sub_question,
+                        "label": figure,
+                        "page_number": result.get("page_number"),
                     }
                     all_figures.append(figure_ref)
 
@@ -218,16 +283,21 @@ def extract_tables_and_figures_references(relevant_points):
                     label = figure.get("label")
                     if label and label != "None":
                         figure_ref = {
-                            "label": label,
-                            "description": figure.get("description"),
-                            "page_number": result.get("page_number"),
-                            "section_title": result.get("section_title"),
-                            "subsection_title": result.get("subsection_title"),
                             "sub_question": sub_question,
+                            "label": label,
+                            "page_number": result.get("page_number"),
                         }
                         all_figures.append(figure_ref)
 
-    return {"tables": all_tables, "figures": all_figures}
+    references = {"tables": all_tables, "figures": all_figures}
+
+    # Correlate with actual files on disk
+    references = correlate_references_with_files(references)
+
+    # Deduplicate references to remove duplicates across sub-questions
+    references = deduplicate_references(references)
+
+    return references
 
 
 class ManufacturingRetrieval:
@@ -261,7 +331,11 @@ class ManufacturingRetrieval:
 
         return all_questions_points
 
-    def answer_question(self, relevant_points: str, user_question: str):
+    def answer_question(self, relevant_points, user_question: str):
+        # Extract references
+        references = extract_tables_and_figures_references(relevant_points)
+
+        # Get the answer
         resp = litellm_client.chat(
             messages=[
                 {
@@ -288,48 +362,22 @@ class ManufacturingRetrieval:
             temperature=0.0,
             max_tokens=10000,
         )
-        return resp.choices[0].message.content
+        answer = resp.choices[0].message.content
+
+        return {"answer": answer, "references": references}
 
 
 if __name__ == "__main__":
-    user_question = (
-        "After replacing the electronic control module on a 943, what sequence "
-        "of recalibrations is required for both frame tilt and joystick sensors "
-        "to ensure accurate and safe operation? Include expected sensor ranges "
-        "or offset behavior."
-    )
+    import json
+
+    user_question = "Let's discuss about Engine exhaust system"
+
     retrieval = ManufacturingRetrieval()
 
     relevant_points = retrieval.retrieve_relevant_points(user_question)
 
-    # Extract tables and figures references
-    references = extract_tables_and_figures_references(relevant_points)
+    # Get answer with references
+    result = retrieval.answer_question(relevant_points, user_question)
 
-    print("Tables found:")
-    for table in references["tables"]:
-        title = table.get("title", table.get("table_id", "Unknown"))
-        page = table.get("page_number", "Unknown")
-        print(f"  - {title} (Page {page})")
-
-    print(f"\nFigures found ({len(references['figures'])} total):")
-    for figure in references["figures"]:
-        # Try different possible identifiers for figures
-        figure_id = (
-            figure.get("label")
-            or figure.get("figure_id")
-            or figure.get("element_id")
-            or "Unknown"
-        )
-        page = figure.get("page_number", "Unknown")
-        description = figure.get("description", "")
-        if description:
-            print(f"  - {figure_id} (Page {page}): {description}")
-        else:
-            print(f"  - {figure_id} (Page {page})")
-
-    # answer = retrieval.answer_question(relevant_points, user_question)
-
-    # with open("q&a.json", "a") as f:
-    #     f.write(json.dumps({"question": user_question, "answer": answer}))
-
-    # print(answer)
+    with open("result.json", "w") as f:
+        json.dump(result, f)

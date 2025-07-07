@@ -70,3 +70,5 @@ scratch/
 data/
 
 scratch.zip
+
+*.pdf
