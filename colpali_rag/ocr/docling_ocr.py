@@ -40,3 +40,12 @@ class DoclingOCRStrategy:
         else:
             result = self.converter.convert(pdf_path, page_range=page_range)
         return result.document
+
+
+if __name__ == "__main__":
+    docling_ocr_strategy = DoclingOCRStrategy()
+    content = docling_ocr_strategy.perform_ocr_on_pdf_docling_document(
+        "/Users/vesaalexandru/Workspaces/cube/america/complex-rag/colpali_rag/ocr/__pycache__/AGREEMENT OF PURCHASE (analysis).docx"
+    ).export_to_html()
+    with open("content.html", "w") as f:
+        f.write(content)

@@ -67,38 +67,77 @@ with col_right:
         st.markdown(answer)
 
         st.markdown("---")
-        st.markdown("## References")
+        st.markdown("## 📚 References")
 
-        def show_reference(ref, ref_type):
-            page = ref["page_number"]
-            subq = ref["sub_question"]
-            st.write(f"**Sub-question:** {subq} | **Page:** {page}")
-            if ref_type == "table":
-                if "png_file" in ref and os.path.exists(ref["png_file"]):
-                    st.image(
-                        ref["png_file"],
-                        caption=ref["element_id"],
-                        use_column_width=True,
-                    )
-            elif ref_type == "figure":
-                if "png_file" in ref and os.path.exists(ref["png_file"]):
-                    st.image(
-                        ref["png_file"], caption=ref["label"], use_column_width=True
-                    )
+        # Group references by sub-question
+        def group_references_by_subquestion(references):
+            grouped = {}
+            for ref_type in ["tables", "figures"]:
+                for ref in references[ref_type]:
+                    subq = ref.get("sub_question", "General")
+                    if subq not in grouped:
+                        grouped[subq] = {"tables": [], "figures": []}
+                    grouped[subq][ref_type].append(ref)
+            return grouped
 
-        if references["tables"]:
-            st.markdown("### Tables")
-            for table in references["tables"]:
-                show_reference(table, "table")
-        else:
-            st.write("No tables referenced.")
+        grouped_refs = group_references_by_subquestion(references)
 
-        if references["figures"]:
-            st.markdown("### Figures")
-            for figure in references["figures"]:
-                show_reference(figure, "figure")
-        else:
-            st.write("No figures referenced.")
+        # Display grouped references
+        for subq, refs in grouped_refs.items():
+            total_refs = len(refs["tables"]) + len(refs["figures"])
+            if total_refs == 0:
+                continue
+
+            with st.expander(f"🔍 {subq} ({total_refs} references)", expanded=True):
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    if refs["tables"]:
+                        st.markdown("**📊 Tables**")
+                        for i, table in enumerate(refs["tables"], 1):
+                            with st.container():
+                                st.markdown(
+                                    f"**Table {i}** - Page {table.get('page_number', 'N/A')}"
+                                )
+                                st.markdown(f"*ID: {table.get('element_id', 'N/A')}*")
+
+                                # Show table image if available
+                                if "png_file" in table and os.path.exists(
+                                    table["png_file"]
+                                ):
+                                    with st.expander("📷 View Table", expanded=False):
+                                        st.image(
+                                            table["png_file"],
+                                            caption=f"Table: {table.get('element_id', 'N/A')}",
+                                            use_column_width=True,
+                                        )
+                                st.markdown("---")
+
+                with col2:
+                    if refs["figures"]:
+                        st.markdown("**🖼️ Figures**")
+                        for i, figure in enumerate(refs["figures"], 1):
+                            with st.container():
+                                st.markdown(
+                                    f"**Figure {i}** - Page {figure.get('page_number', 'N/A')}"
+                                )
+                                st.markdown(f"*Label: {figure.get('label', 'N/A')}*")
+
+                                # Show figure image if available
+                                if "png_file" in figure and os.path.exists(
+                                    figure["png_file"]
+                                ):
+                                    with st.expander("📷 View Figure", expanded=False):
+                                        st.image(
+                                            figure["png_file"],
+                                            caption=f"Figure: {figure.get('label', 'N/A')}",
+                                            use_column_width=True,
+                                        )
+                                st.markdown("---")
+
+        # Show summary if no references found
+        if not any(references.values()):
+            st.info("No specific tables or figures referenced in this answer.")
 
     else:
         st.info("Enter a question and press 'Get Answer'.")

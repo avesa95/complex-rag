@@ -21,6 +21,8 @@ dependencies = [
     "fastembed>=0.7.1",
     "streamlit-pdf-viewer>=0.0.26",
     "streamlit>=1.46.1",
+    "fastapi>=0.116.0",
+    "uvicorn>=0.35.0",
 ]
 
 [project.optional-dependencies]
