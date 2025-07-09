@@ -27,6 +27,7 @@ const PDFUploadApp = () => {
   const [response, setResponse] = useState<Response | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [question, setQuestion] = useState("");
+  const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -162,6 +163,16 @@ const PDFUploadApp = () => {
 
   return (
     <div className="h-screen bg-gray-50 flex">
+      {/* Image Modal */}
+      {modalImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60" onClick={() => setModalImage(null)}>
+          <div className="bg-white rounded-lg shadow-lg p-4 relative max-w-3xl w-full flex flex-col items-center" onClick={e => e.stopPropagation()}>
+            <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl font-bold" onClick={() => setModalImage(null)}>&times;</button>
+            <img src={modalImage.src} alt={modalImage.alt} className="max-h-[80vh] max-w-full rounded" />
+            <div className="mt-2 text-gray-700 text-sm">{modalImage.alt}</div>
+          </div>
+        </div>
+      )}
       {/* Left Side - Response Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
@@ -233,7 +244,12 @@ const PDFUploadApp = () => {
                               </a>
                               {/* Show image preview if png_file exists */}
                               {table.png_file && (
-                                <img src={`http://localhost:8000/${table.png_file}`} alt={table.element_id} className="mt-2 max-w-xs border rounded" />
+                                <img
+                                  src={`http://localhost:8000/${table.png_file}`}
+                                  alt={table.element_id}
+                                  className="mt-2 max-w-xs border rounded cursor-pointer hover:shadow-lg"
+                                  onClick={() => setModalImage({ src: `http://localhost:8000/${table.png_file}`, alt: table.element_id })}
+                                />
                               )}
                             </div>
                           </div>
@@ -266,7 +282,12 @@ const PDFUploadApp = () => {
                               </a>
                               {/* Show image preview if png_file exists */}
                               {figure.png_file && (
-                                <img src={`http://localhost:8000/${figure.png_file}`} alt={figure.label} className="mt-2 max-w-xs border rounded" />
+                                <img
+                                  src={`http://localhost:8000/${figure.png_file}`}
+                                  alt={figure.label}
+                                  className="mt-2 max-w-xs border rounded cursor-pointer hover:shadow-lg"
+                                  onClick={() => setModalImage({ src: `http://localhost:8000/${figure.png_file}`, alt: figure.label })}
+                                />
                               )}
                             </div>
                           </div>
