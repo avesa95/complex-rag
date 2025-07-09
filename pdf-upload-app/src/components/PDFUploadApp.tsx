@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload, File, ExternalLink, Table, Image, Loader, CheckCircle, AlertCircle, Send } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
@@ -28,6 +28,21 @@ const PDFUploadApp = () => {
   const [error, setError] = useState<string | null>(null);
   const [question, setQuestion] = useState("");
   const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
+  const [history, setHistory] = useState<
+    { question: string; answer: string; references: Response['references'] }[]
+  >([]);
+
+  // Load history from backend on mount
+  useEffect(() => {
+    fetch('http://localhost:8000/history')
+      .then(res => res.json())
+      .then(data => setHistory(Array.isArray(data) ? data : []));
+  }, []);
+
+  // Save history to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('pdfqa_history', JSON.stringify(history));
+  }, [history]);
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -68,6 +83,14 @@ const PDFUploadApp = () => {
       }
       const data = await res.json();
       setResponse(data);
+      const newEntry = { question, answer: data.answer, references: data.references };
+      setHistory(prev => [...prev, newEntry]);
+      // Save to backend
+      fetch('http://localhost:8000/save-history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry),
+      });
     } catch (err) {
       setError(err.message || 'Failed to get answer');
     } finally {
@@ -181,6 +204,26 @@ const PDFUploadApp = () => {
         </div>
         {/* Response Content */}
         <div className="flex-1 overflow-y-auto p-6">
+          {/* History Section */}
+          {history.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold mb-2 text-gray-800">History</h2>
+              <ul className="space-y-2">
+                {history.map((item, idx) => (
+                  <li key={idx}>
+                    <button
+                      className="text-blue-600 hover:underline text-left w-full truncate"
+                      title={item.question}
+                      onClick={() => setResponse({ answer: item.answer, references: item.references })}
+                    >
+                      {item.question}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <hr className="my-4" />
+            </div>
+          )}
           {!response && !isLoading && (
             <div className="flex items-center justify-center h-full">
               <div className="text-center text-gray-500">
@@ -308,74 +351,98 @@ const PDFUploadApp = () => {
           <h2 className="text-lg font-semibold text-gray-900">Upload PDF & Ask</h2>
         </div>
         {/* Upload & Question Content */}
-        <div className="flex-1 p-6 flex flex-col space-y-6">
-          {/* Upload Area */}
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
-            <Upload className="mx-auto h-10 w-10 text-gray-400 mb-3" />
-            <div className="space-y-2">
-              <label htmlFor="pdf-upload" className="cursor-pointer">
-                <span className="text-sm font-medium text-gray-700">Choose PDF file</span>
-                <input
-                  id="pdf-upload"
-                  type="file"
-                  accept=".pdf"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-              </label>
-              <p className="text-xs text-gray-500">Drag and drop or click to browse</p>
-            </div>
-          </div>
-          {/* Selected File */}
-          {selectedFile && (
-            <div className="p-3 bg-blue-50 rounded-lg flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <File className="h-5 w-5 text-blue-600" />
-                <div>
-                  <p className="font-medium text-gray-900 text-sm">{selectedFile.name}</p>
-                  <p className="text-xs text-gray-500">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                </div>
+        <div className="flex-1 flex flex-col">
+          {/* Top: Upload/Question Area */}
+          <div className="p-6 space-y-6 flex-grow">
+            {/* Upload Area */}
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+              <Upload className="mx-auto h-10 w-10 text-gray-400 mb-3" />
+              <div className="space-y-2">
+                <label htmlFor="pdf-upload" className="cursor-pointer">
+                  <span className="text-sm font-medium text-gray-700">Choose PDF file</span>
+                  <input
+                    id="pdf-upload"
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                </label>
+                <p className="text-xs text-gray-500">Drag and drop or click to browse</p>
               </div>
-              <CheckCircle className="h-5 w-5 text-green-600" />
             </div>
-          )}
-          {/* Error Message */}
-          {error && (
-            <div className="p-3 bg-red-50 rounded-lg flex items-center space-x-2">
-              <AlertCircle className="h-5 w-5 text-red-600" />
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          )}
-          {/* Question Input */}
-          <form onSubmit={handleQuestionSubmit} className="flex flex-col space-y-3">
-            <label htmlFor="question" className="text-sm font-medium text-gray-700">Ask a question</label>
-            <textarea
-              id="question"
-              value={question}
-              onChange={handleQuestionChange}
-              rows={3}
-              className="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
-              placeholder="Type your question about the PDF..."
-              disabled={!selectedFile || isLoading}
-            />
-            <button
-              type="submit"
-              disabled={!selectedFile || !question.trim() || isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
-            >
-              {isLoading ? (
-                <>
-                  <Loader className="h-4 w-4 animate-spin" />
-                  <span>Analyzing...</span>
-                </>
-              ) : (
-                <>
-                  <Send className="h-4 w-4" />
-                  <span>Ask</span>
-                </>
-              )}
-            </button>
-          </form>
+            {/* Selected File */}
+            {selectedFile && (
+              <div className="p-3 bg-blue-50 rounded-lg flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <File className="h-5 w-5 text-blue-600" />
+                  <div>
+                    <p className="font-medium text-gray-900 text-sm">{selectedFile.name}</p>
+                    <p className="text-xs text-gray-500">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                  </div>
+                </div>
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              </div>
+            )}
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 bg-red-50 rounded-lg flex items-center space-x-2">
+                <AlertCircle className="h-5 w-5 text-red-600" />
+                <p className="text-red-700 text-sm">{error}</p>
+              </div>
+            )}
+            {/* Question Input */}
+            <form onSubmit={handleQuestionSubmit} className="flex flex-col space-y-3">
+              <label htmlFor="question" className="text-sm font-medium text-gray-700">Ask a question</label>
+              <textarea
+                id="question"
+                value={question}
+                onChange={handleQuestionChange}
+                rows={3}
+                className="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                placeholder="Type your question about the PDF..."
+                disabled={!selectedFile || isLoading}
+              />
+              <button
+                type="submit"
+                disabled={!selectedFile || !question.trim() || isLoading}
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader className="h-4 w-4 animate-spin" />
+                    <span>Analyzing...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4" />
+                    <span>Ask</span>
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+          {/* Bottom: History */}
+          <div className="p-6 border-t border-gray-100">
+            <h2 className="text-lg font-semibold mb-2 text-gray-800">History</h2>
+            {history.length === 0 ? (
+              <div className="text-gray-500 text-sm">No history yet.</div>
+            ) : (
+              <ul className="space-y-2 max-h-60 overflow-y-auto pr-2">
+                {history.map((item, idx) => (
+                  <li key={idx}>
+                    <button
+                      className="text-blue-600 hover:underline text-left w-full truncate"
+                      title={item.question}
+                      onClick={() => setResponse({ answer: item.answer, references: item.references })}
+                    >
+                      {item.question}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
